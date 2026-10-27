@@ -1,0 +1,40 @@
+{
+  "name": "kindroute",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:db": "vitest run supabase/tests",
+    "test:demo": "vitest run src"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.117.3",
+    "@react-three/fiber": "^8.17.10",
+    "@supabase/supabase-js": "^2.46.1",
+    "framer-motion": "^11.11.17",
+    "gsap": "^3.12.5",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.12",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.170.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.5"
+  }
+}

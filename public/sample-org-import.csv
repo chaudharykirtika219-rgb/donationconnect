@@ -1,0 +1,4 @@
+name,type,locality,address,pin_code,phone,email,accepted_categories
+Sample Hope Balgram,children_home,Katraj,"Sample address, Katraj (fictional)",411046,+91 00000 09101,hope@example.org,books;clothes;toys
+Sample Sandhya Elders Home,old_age_home,Bibwewadi,"Sample address, Bibwewadi (fictional)",411037,+91 00000 09102,sandhya@example.org,bedding;hygiene;medical
+Sample Annapurna Kitchen,community_kitchen,Pimpri,"Sample address, Pimpri (fictional)",411018,+91 00000 09103,annapurna@example.org,packaged_food;fresh_food
