@@ -260,7 +260,8 @@ export class SupabaseBackend implements Backend {
   }
 
   async signOut() {
-    await this.sb.auth.signOut()
+    // this browser only — signing out must not end the user's sessions on their other devices
+    await this.sb.auth.signOut({ scope: 'local' })
   }
 
   /* -------- public -------- */

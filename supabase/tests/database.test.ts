@@ -432,3 +432,20 @@ describe('Demo seed isolation', () => {
     await db.admin(`update app_settings set environment = 'production'`)
   })
 })
+
+// Traps that only show up behind Supabase's API layer (each was found by the live test on a real project):
+// PostgREST retries 40001/40P01 forever, Supabase rejects UPDATE/DELETE without WHERE, pgcrypto lives in "extensions".
+describe('Supabase compatibility of every function (after all migrations)', () => {
+  it('no retryable error codes, no WHERE-less updates, pgcrypto reachable', async () => {
+    const fns = await db.admin<{ name: string; src: string; config: string[] | null }>(
+      `select p.proname as name, p.prosrc as src, p.proconfig as config from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public' and p.prolang = (select oid from pg_language where lanname = 'plpgsql') or (n.nspname = 'public' and p.prolang = (select oid from pg_language where lanname = 'sql'))`)
+    const problems: string[] = []
+    for (const f of fns) {
+      if (/errcode\s*=\s*'(40001|40P01)'/.test(f.src)) problems.push(`${f.name}: raises a retryable errcode (PostgREST would retry forever)`)
+      for (const m of f.src.matchAll(/\b(update\s+[a-z_.]+\s+set\b|delete\s+from\s+[a-z_.]+)[\s\S]*?(;|\)\s*select|$)/gi))
+        if (!/\bwhere\b/i.test(m[0]) && !/\bon conflict\b/i.test(f.src.slice(Math.max(0, m.index! - 200), m.index))) problems.push(`${f.name}: ${m[1]} without WHERE`)
+      if (/gen_random_bytes|\bdigest\(|\bcrypt\(/.test(f.src) && !(f.config ?? []).some((c) => /search_path=.*extensions/.test(c))) problems.push(`${f.name}: uses pgcrypto without "extensions" in search_path`)
+    }
+    expect(problems).toEqual([])
+  })
+})

@@ -10,7 +10,8 @@
     "typecheck": "tsc -b",
     "test": "vitest run",
     "test:db": "vitest run supabase/tests",
-    "test:demo": "vitest run src"
+    "test:demo": "vitest run src",
+    "test:live": "vitest run supabase/tests/live.journey.test.ts"
   },
   "dependencies": {
     "@react-three/drei": "^9.117.3",

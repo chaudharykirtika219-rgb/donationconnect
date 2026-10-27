@@ -20,6 +20,10 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts', 'supabase/tests/**/*.test.ts'],
+    // the live test talks to the separate Supabase TEST project — only via `npm run test:live`
+    exclude: (globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env.npm_lifecycle_event === 'test:live' ? ['**/node_modules/**'] : ['**/node_modules/**', 'supabase/tests/live.*'],
     testTimeout: 30_000,
+    // each database suite boots its own WASM Postgres; running files one at a time avoids worker memory crashes
+    fileParallelism: false,
   },
 })
